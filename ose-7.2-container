@@ -1,0 +1,39 @@
+flavor1:
+  #default: /usr/share/ansible/openshift-ansible/playbooks/byo/config.yml
+  playbook_path: /usr/share/ansible/openshift-ansible/playbooks/byo/config.yml
+  #default: http://virt-openshift-05.lab.eng.nay.redhat.com/rcm-guest/puddles/RHAOS/AtomicOpenShift-errata/3.2/latest/RH7-RHAOS-3.2/x86_64/os/ 
+  puddle_url: http://virt-openshift-05.lab.eng.nay.redhat.com/rcm-guest/puddles/RHAOS/AtomicOpenShift-errata/3.2/latest/RH7-RHAOS-3.2/x86_64/os/ 
+  #default: openshift-enterprise
+  deployment_type: openshift-enterprise
+  master_num: 1
+  node_num: 1
+  installs: rpm
+  image_name: RHEL72-docker19
+  ha: no
+flavor2:
+  deployment_type: openshift-enterprise
+  master_num: 1
+  node_num: 1
+  installs: container
+  #openshift_image_tag: v3.2.0.14
+  image_name: RHEL72-docker19
+  ha: no
+flavor3:
+  master_num: 1
+  node_num: 1
+  #openshift_image_tag: v3.2.0.14
+  installs: container
+  image_name: AtomicHost72-docker19
+  ha: no
+flavor4:
+  master_num: 2
+  node_num: 1
+  installs: rpm
+  image_name: RHEL72-docker19
+  ha: native
+flavor5:
+  master_num: 2
+  node_num: 1
+  installs: rpm
+  image_name: RHEL72-docker19
+  ha: pacemaker
