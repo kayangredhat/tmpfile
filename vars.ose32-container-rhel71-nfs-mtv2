@@ -1,0 +1,52 @@
+template: http://git.app.eng.bos.redhat.com/git/openshift-misc.git/plain/v3-launch-templates/functionality-testing/hosts.1master+1node+1nfs
+
+rhel_roles:
+- master
+- node
+- router
+- registry
+- nfs
+
+iaas_name: openstack_mtv2
+image: RHEL71-docker19
+use_rpm_playbook: yes
+openshift_playbook_rpm_repos: "[{'id': 'aos-playbook-rpm', 'name': 'aos-playbook-rpm', 'baseurl': 'http://download.eng.bos.redhat.com/rcm-guest/puddles/RHAOS/AtomicOpenShift-errata/3.2/latest/RH7-RHAOS-3.2/x86_64/os', 'enabled': 1, 'gpgcheck': 0}]"
+auth_type: LDAP
+#os_sdn_network_plugin_name: redhat/openshift-ovs-multitenant
+overwrite_openshift_hostname: true
+openshift_master_default_subdomain_enable: true
+
+openshift_anisble_vars:
+  deployment_type: openshift-enterprise
+
+  oreg_url: brew-pulp-docker01.web.prod.ext.phx2.redhat.com:8888/openshift3/ose-${component}:${version}
+
+  openshift_docker_additional_registries: brew-pulp-docker01.web.prod.ext.phx2.redhat.com:8888
+
+  openshift_additional_repos: "[{'id': 'aos', 'name': 'ose-devel', 'baseurl': 'http://download.eng.bos.redhat.com/rcm-guest/puddles/RHAOS/AtomicOpenShift-errata/3.2/latest/RH7-RHAOS-3.2/x86_64/os', 'enabled': 1, 'gpgcheck': 0}]"
+
+  openshift_docker_insecure_registries: brew-pulp-docker01.web.prod.ext.phx2.redhat.com:8888,virt-openshift-05.lab.eng.nay.redhat.com:5000,virt-openshift-05.lab.eng.nay.redhat.com:5001,registry.qe.openshift.com
+
+  use_cluster_metrics: true
+
+  use_cockpit: false
+
+
+  openshift_node_kubelet_args: '{"minimum-container-ttl-duration": ["10s"], "maximum-dead-containers-per-container": ["1"], "maximum-dead-containers": ["20"], "image-gc-high-threshold": ["90"], "image-gc-low-threshold": ["80"]}'
+
+  openshift_registry_selector: "region=primary,zone=default"
+  openshift_hosted_router_selector: "region=primary,zone=default"
+
+  debug_level: 5
+  openshift_set_hostname: true
+  openshift_override_hostname_check: true
+
+  openshift_hosted_registry_storage_kind: nfs
+  openshift_hosted_registry_storage_nfs_options: '"*(rw,root_squash,sync,no_wdelay)"'
+  openshift_hosted_registry_storage_nfs_directory: /var/lib/exports
+  openshift_hosted_registry_storage_volume_name: regpv
+  openshift_hosted_registry_storage_access_modes: ["ReadWriteMany"]
+  openshift_hosted_registry_storage_volume_size: 17G
+
+  containerized: true
+
